@@ -1,0 +1,8 @@
+# count the number of words
+def count(p):
+    l = p.split()
+    return len(l)
+
+
+para = str(input("Enter the paragraph"))
+print("The word count is:", count(para))
