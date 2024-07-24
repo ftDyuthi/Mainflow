@@ -1,0 +1,81 @@
+import datetime
+
+class ExpenseTracker:
+    def __init__(self):
+        self.expenses = []
+        self.categories = ["Food", "Transportation", "Entertainment", "Bills", "Other"]
+
+    def add_expense(self, amount, description, category):
+        date = datetime.date.today()
+        expense = {
+            "date": date,
+            "amount": amount,
+            "description": description,
+            "category": category
+        }
+        self.expenses.append(expense)
+        print("Expense added successfully!")
+
+    def view_expenses(self):
+        if not self.expenses:
+            print("No expenses recorded yet.")
+        else:
+            for expense in self.expenses:
+                print(f"Date: {expense['date']}, Amount: ${expense['amount']:.2f}, "
+                      f"Description: {expense['description']}, Category: {expense['category']}")
+
+    def monthly_summary(self):
+        if not self.expenses:
+            print("No expenses recorded yet.")
+            return
+
+        total = sum(expense['amount'] for expense in self.expenses)
+        print(f"Total expenses: ${total:.2f}")
+
+        for category in self.categories:
+            category_total = sum(expense['amount'] for expense in self.expenses if expense['category'] == category)
+            if category_total > 0:
+                print(f"{category}: ${category_total:.2f}")
+
+def get_user_input():
+    while True:
+        try:
+            amount = float(input("Enter expense amount: $"))
+            if amount < 0:
+                raise ValueError("Amount must be positive")
+            description = input("Enter expense description: ")
+            print("Categories:")
+            for i, category in enumerate(tracker.categories, 1):
+                print(f"{i}. {category}")
+            category_index = int(input("Select category number: ")) - 1
+            if category_index < 0 or category_index >= len(tracker.categories):
+                raise ValueError("Invalid category selection")
+            return amount, description, tracker.categories[category_index]
+        except ValueError as e:
+            print(f"Invalid input: {e}. Please try again.")
+
+def main_menu():
+    while True:
+        print("\n--- Expense Tracker ---")
+        print("1. Add Expense")
+        print("2. View Expenses")
+        print("3. Monthly Summary")
+        print("4. Exit")
+        choice = input("Enter your choice (1-4): ")
+
+        if choice == '1':
+            amount, description, category = get_user_input()
+            tracker.add_expense(amount, description, category)
+        elif choice == '2':
+            tracker.view_expenses()
+        elif choice == '3':
+            tracker.monthly_summary()
+        elif choice == '4':
+            print("Thank you for using Expense Tracker. Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    tracker = ExpenseTracker()
+    main_menu()
